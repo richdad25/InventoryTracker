@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="MassTransit" Version="8.3.1" />
+    <PackageReference Include="Otus.QueueDto" Version="1.0.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\InventoryTracker.Domain.Repositories.Abstractions\InventoryTracker.Domain.Repositories.Abstractions.csproj" />
+    <ProjectReference Include="..\InventoryTracker.Application.Models\InventoryTracker.Application.Models.csproj" />
+    <ProjectReference Include="..\InventoryTracker\InventoryTrackerMicroservice\InventoryTracker\Domain\InventoryTracker.Domain\InventoryTracker.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
