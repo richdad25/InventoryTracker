@@ -17,24 +17,23 @@ namespace InventoryTracker.Infrastructure.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Применение конфигураций из отдельных классов
-            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            // Уберите вызов ApplyConfiguration для ProductConfiguration
             modelBuilder.ApplyConfiguration(new WarehouseConfiguration());
             modelBuilder.ApplyConfiguration(new InventoryTransactionConfiguration());
             modelBuilder.ApplyConfiguration(new SupplierConfiguration());
             modelBuilder.ApplyConfiguration(new ReportConfiguration());
 
-            // Конфигурация Value Objects для Product
+            // Полная конфигурация Product здесь
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.HasKey(p => p.Id);
+
+                // Конфигурация Value Objects
                 entity.OwnsOne(p => p.Name, name =>
                 {
                     name.Property(v => v.Value)
                         .HasColumnName("Name")
                         .HasMaxLength(100);
-
-                    // Дополнительные настройки при необходимости
-                    name.HasIndex(v => v.Value); // Индекс для имени
                 });
 
                 entity.OwnsOne(p => p.Article, article =>
@@ -42,8 +41,6 @@ namespace InventoryTracker.Infrastructure.EntityFramework
                     article.Property(v => v.Value)
                         .HasColumnName("Article")
                         .HasMaxLength(50);
-
-                    article.HasIndex(v => v.Value).IsUnique(); // Уникальный индекс для артикула
                 });
 
                 entity.OwnsOne(p => p.Price, price =>
@@ -52,20 +49,19 @@ namespace InventoryTracker.Infrastructure.EntityFramework
                         .HasColumnName("Price")
                         .HasColumnType("decimal(18,2)");
                 });
+
+                // Остальные свойства
+                entity.Property(p => p.Description).IsRequired();
+                entity.Property(p => p.Quantity).IsRequired();
+                entity.Property(p => p.Category).IsRequired();
+                entity.Property(p => p.ExpiryDate).IsRequired(false);
+
+                // Навигационные свойства
+                entity.HasOne(p => p.Supplier)
+                    .WithMany(s => s.Products)
+                    .HasForeignKey(p => p.SupplierId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
-
-            // Настройка связей
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Supplier)
-                .WithMany(s => s.Products)
-                .HasForeignKey(p => p.SupplierId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<InventoryTransaction>()
-                .HasOne(t => t.Product)
-                .WithMany(p => p.Transactions)
-                .HasForeignKey(t => t.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

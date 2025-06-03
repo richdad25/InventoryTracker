@@ -15,7 +15,7 @@ namespace online_shop.Web
 
             builder.Services.AddNpgsql<ApplicationDbContext>(dbConnectionString, options =>
             {
-                options.MigrationsAssembly("InventoryTracker.Infrastructure.EntityFramework");
+                options.MigrationsAssembly("InventoryTracker.Infrastructure.Entity.Framework");
 
             });
 
