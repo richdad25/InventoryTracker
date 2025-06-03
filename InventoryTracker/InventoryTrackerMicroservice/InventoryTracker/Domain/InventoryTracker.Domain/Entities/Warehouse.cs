@@ -1,4 +1,4 @@
-﻿// InventoryTracker.Domain/Entities/Warehouse.cs
+﻿
 using InventoryTracker.Domain.Entities.Base;
 
 namespace InventoryTracker.Domain.Entities

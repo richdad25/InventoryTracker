@@ -1,9 +1,9 @@
-﻿using InventoryTracker.Application.Models.Base;
-
-namespace InventoryTracker.Application.Models.Warehouse
+﻿namespace InventoryTracker.Application.Models.Warehouse
 {
-    public record CreateWarehouseModel(
-        string Name,
-        string Location,
-        double Capacity) : ICreateModel;
+    public class CreateWarehouseModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+    }
 }

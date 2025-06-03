@@ -3,6 +3,18 @@ using InventoryTracker.Domain.ValueObjects.Validators;
 
 namespace InventoryTracker.Domain.ValueObjects
 {
-    public class ArticleNumber(string number)
-        : ValueObject<string>(new ArticleNumberValidator(), number.Trim());
+    public class ArticleNumber : ValueObject<string>
+    {
+        public string Value { get; } = default!;
+
+        public ArticleNumber(string number)
+            : base(new ArticleNumberValidator(), number.Trim())
+        {
+            Value = number.Trim();
+        }
+
+        protected ArticleNumber() : base() { }
+
+        public override string ToString() => Value;
+    }
 }

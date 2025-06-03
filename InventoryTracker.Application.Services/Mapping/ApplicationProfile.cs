@@ -1,11 +1,11 @@
-﻿using AutoMapper;
-using InventoryTracker.Application.Models;
+﻿using InventoryTracker.Application.Models;
 using InventoryTracker.Application.Models.Product;
+using InventoryTracker.Application.Models.Supplier;
 using InventoryTracker.Application.Models.Transaction;
 using InventoryTracker.Application.Models.Warehouse;
 using InventoryTracker.Domain.Entities;
-using InventoryTracker.Domain.ValueObjects;
-using Otus.QueueDto.Inventory;
+using AutoMapper;
+using InventoryTracker.Application.Models.Report;
 
 namespace InventoryTracker.Application.Services.Mapping
 {
@@ -13,17 +13,19 @@ namespace InventoryTracker.Application.Services.Mapping
     {
         public ApplicationProfile()
         {
-            // Product
-            CreateMap<Product, ProductModel>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.Article, opt => opt.MapFrom(src => src.Article));
+            CreateMap<Product, ProductModel>();
+            CreateMap<CreateProductModel, Product>();
 
-            // Warehouse
             CreateMap<Warehouse, WarehouseModel>();
+            CreateMap<CreateWarehouseModel, Warehouse>();
 
-            // Transaction
-            CreateMap<InventoryTransaction, InventoryTransactionModel>()
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()));
+            CreateMap<InventoryTransaction, InventoryTransactionModel>();
+            CreateMap<CreateInventoryTransactionModel, InventoryTransaction>();
+
+            CreateMap<Supplier, SupplierModel>();
+            CreateMap<CreateSupplierModel, Supplier>();
+
+            CreateMap<InventoryReportModel, InventoryReportModel>();
         }
     }
 }

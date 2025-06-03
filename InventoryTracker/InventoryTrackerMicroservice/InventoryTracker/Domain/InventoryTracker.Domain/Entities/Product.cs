@@ -1,13 +1,14 @@
 ﻿using InventoryTracker.Domain.Entities.Base;
+using InventoryTracker.Domain.ValueObjects;
 
 namespace InventoryTracker.Domain.Entities
 {
     public class Product : Entity<Guid>
     {
-        public string Name { get; private set; }
+        public ProductName Name { get; private set; }
         public string Description { get; private set; }
-        public string Article { get; private set; }
-        public decimal Price { get; private set; }
+        public ArticleNumber Article { get; private set; }
+        public Money Price { get; private set; }
         public int Quantity { get; private set; }
         public string Category { get; private set; }
         public Guid SupplierId { get; private set; }
@@ -19,10 +20,10 @@ namespace InventoryTracker.Domain.Entities
 
         public Product(
             Guid id,
-            string name,
+            ProductName name,
             string description,
-            string article,
-            decimal price,
+            ArticleNumber article,
+            Money price,
             int quantity,
             string category,
             Guid supplierId,
@@ -43,7 +44,6 @@ namespace InventoryTracker.Domain.Entities
         {
             if (amount <= 0)
                 throw new ArgumentException("Amount must be positive", nameof(amount));
-
             Quantity += amount;
         }
 
@@ -51,18 +51,13 @@ namespace InventoryTracker.Domain.Entities
         {
             if (amount <= 0)
                 throw new ArgumentException("Amount must be positive", nameof(amount));
-
             if (Quantity < amount)
                 throw new InvalidOperationException("Insufficient quantity");
-
             Quantity -= amount;
         }
 
-        public void UpdatePrice(decimal newPrice)
+        public void UpdatePrice(Money newPrice)
         {
-            if (newPrice <= 0)
-                throw new ArgumentException("Price must be positive", nameof(newPrice));
-
             Price = newPrice;
         }
 

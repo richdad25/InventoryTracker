@@ -1,10 +1,11 @@
-﻿using InventoryTracker.Application.Models.Base;
-using InventoryTracker.Domain.Enums;
-
-namespace InventoryTracker.Application.Models.Transaction
+﻿namespace InventoryTracker.Application.Models.Transaction
 {
-    public record CreateInventoryTransactionModel(
-        Guid ProductId,
-        int Quantity,
-        TransactionType Type) : ICreateModel;
+    public class CreateInventoryTransactionModel
+    {
+        public Guid ProductId { get; set; }
+        public Guid WarehouseId { get; set; }
+        public int Quantity { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public string TransactionType { get; set; } // "IN" или "OUT"
+    }
 }

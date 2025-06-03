@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\InventoryTracker.Domain.Repositories.Abstractions\InventoryTracker.Domain.Repositories.Abstractions.csproj" />
+    <ProjectReference Include="..\InventoryTracker.Domain.Repositories.Abstractions\InventoryTracker.Domain.Repositories.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

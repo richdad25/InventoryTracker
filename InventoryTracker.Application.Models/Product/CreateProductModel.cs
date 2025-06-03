@@ -1,14 +1,10 @@
-﻿using InventoryTracker.Application.Models.Base;
-
-namespace InventoryTracker.Application.Models.Product
+﻿namespace InventoryTracker.Application.Models.Product
 {
-    public record CreateProductModel(
-        string Name,
-        string Description,
-        string Article,
-        decimal Price,
-        int Quantity,
-        string Category,
-        Guid SupplierId,
-        DateTime? ExpiryDate) : ICreateModel, ISupplierModel<Guid>;
+    public class CreateProductModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+    }
 }
