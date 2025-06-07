@@ -1,8 +1,7 @@
 using InventoryTracker.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using InventoryTracker.Infrastructure.EntityFramework;
 
-namespace online_shop.Web
+namespace InventoryTracker.Web
 {
     public class Program
     {
@@ -10,36 +9,52 @@ namespace online_shop.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            var dbConnectionString = builder.Configuration.GetConnectionString(nameof(ApplicationDbContext));
-
-            builder.Services.AddNpgsql<ApplicationDbContext>(dbConnectionString, options =>
-            {
-                options.MigrationsAssembly("InventoryTracker.Infrastructure.Entity.Framework");
-
-            });
-
-            builder.Services.AddDbContext<ApplicationDbContext>(
-                options =>
-                {
-                    options.UseNpgsql(dbConnectionString);
-                });
-
-
-
-
-            builder.Services.AddControllers();
-
+            // Конфигурация сервисов
+            ConfigureServices(builder);
 
             var app = builder.Build();
 
+            // Конфигурация middleware
+            ConfigureMiddleware(app);
 
+            app.Run();
+        }
 
+        private static void ConfigureServices(WebApplicationBuilder builder)
+        {
+            // Регистрация DbContext с PostgreSQL
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseNpgsql(connectionString, npgsqlOptions =>
+                {
+                    npgsqlOptions.MigrationsAssembly("InventoryTracker.Infrastructure.Entity.Framework");
+                });
+
+                // Включение детального логирования только в Development
+                if (builder.Environment.IsDevelopment())
+                {
+                    options.EnableDetailedErrors();
+                    options.EnableSensitiveDataLogging();
+                    options.LogTo(Console.WriteLine, LogLevel.Information);
+                }
+            });
+
+            builder.Services.AddControllers();
+        }
+
+        private static void ConfigureMiddleware(WebApplication app)
+        {
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseAuthorization();
             app.MapControllers();
-            app.Run();
         }
     }
 }

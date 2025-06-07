@@ -1,13 +1,18 @@
 ﻿using InventoryTracker.Domain.Entities;
 using InventoryTracker.Infrastructure.EntityFramework.Configurations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace InventoryTracker.Infrastructure.EntityFramework
 {
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options) { }
+            : base(options)
+        {
+            // Добавлено для отслеживания SQL-запросов в логах (опционально)
+            Console.WriteLine($"DbContext created. Connection string: {Database.GetConnectionString()}");
+        }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
@@ -17,51 +22,81 @@ namespace InventoryTracker.Infrastructure.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Уберите вызов ApplyConfiguration для ProductConfiguration
+            base.OnModelCreating(modelBuilder); // Важно вызвать базовый метод
+
+            // Применение конфигураций из отдельных классов
             modelBuilder.ApplyConfiguration(new WarehouseConfiguration());
             modelBuilder.ApplyConfiguration(new InventoryTransactionConfiguration());
             modelBuilder.ApplyConfiguration(new SupplierConfiguration());
             modelBuilder.ApplyConfiguration(new ReportConfiguration());
 
-            // Полная конфигурация Product здесь
+            // Конфигурация Product
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasKey(p => p.Id);
+                entity.ToTable("Products"); // Явное указание имени таблицы
 
-                // Конфигурация Value Objects
+                entity.HasKey(p => p.Id);
+                entity.Property(p => p.Id).ValueGeneratedOnAdd();
+
+                // Value Objects
                 entity.OwnsOne(p => p.Name, name =>
                 {
                     name.Property(v => v.Value)
                         .HasColumnName("Name")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .IsRequired(); // Добавлено IsRequired
                 });
 
                 entity.OwnsOne(p => p.Article, article =>
                 {
                     article.Property(v => v.Value)
                         .HasColumnName("Article")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .IsRequired();
                 });
 
                 entity.OwnsOne(p => p.Price, price =>
                 {
                     price.Property(v => v.Value)
                         .HasColumnName("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .IsRequired();
                 });
 
-                // Остальные свойства
-                entity.Property(p => p.Description).IsRequired();
-                entity.Property(p => p.Quantity).IsRequired();
-                entity.Property(p => p.Category).IsRequired();
-                entity.Property(p => p.ExpiryDate).IsRequired(false);
+                // Стандартные свойства
+                entity.Property(p => p.Description)
+                    .HasMaxLength(500); // Добавлена максимальная длина
 
-                // Навигационные свойства
+                entity.Property(p => p.Quantity)
+                    .IsRequired()
+                    .HasDefaultValue(0); // Значение по умолчанию
+
+                entity.Property(p => p.Category)
+                    .HasMaxLength(50)
+                    .IsRequired();
+
+                entity.Property(p => p.ExpiryDate)
+                    .IsRequired(false);
+
+                // Связи
                 entity.HasOne(p => p.Supplier)
                     .WithMany(s => s.Products)
                     .HasForeignKey(p => p.SupplierId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired(); // Добавлено IsRequired если связь обязательная
             });
+
+            // Оптимизация для Npgsql (PostgreSQL)
+            modelBuilder.HasPostgresExtension("uuid-ossp"); // Если используете UUID
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Только для разработки - логирование SQL
+#if DEBUG
+            optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging();
+#endif
         }
     }
 }
