@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InventoryTracker.Domain.ValueObjects\InventoryTracker.Domain.ValueObjects.csproj" />
+    <ProjectReference Include="..\InventoryTracker.Infrastructure.Entity.Framework\InventoryTracker.Infrastructure.Entity.Framework.csproj" />
+    <ProjectReference Include="..\InventoryTracker\InventoryTrackerMicroservice\InventoryTracker\Domain\InventoryTracker.Domain\InventoryTracker.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -27,6 +27,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryTracker.WebHost", "InventoryTracker.WebHost\InventoryTracker.WebHost.csproj", "{53D1AAAF-DD8F-4A9D-A1C1-095476D0B630}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{BA607A6F-94DD-4517-8926-FB40AC4B8093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryTrackerTest", "InventoryTrackerTest\InventoryTrackerTest.csproj", "{28EDDBE8-EF2F-4BBD-8980-835908DE0370}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +69,10 @@ Global
 		{53D1AAAF-DD8F-4A9D-A1C1-095476D0B630}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53D1AAAF-DD8F-4A9D-A1C1-095476D0B630}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53D1AAAF-DD8F-4A9D-A1C1-095476D0B630}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28EDDBE8-EF2F-4BBD-8980-835908DE0370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28EDDBE8-EF2F-4BBD-8980-835908DE0370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28EDDBE8-EF2F-4BBD-8980-835908DE0370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28EDDBE8-EF2F-4BBD-8980-835908DE0370}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +86,7 @@ Global
 		{6B23B69D-0B42-4303-90E2-FD0F74CC7A92} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 		{9C634ADC-3E39-4A9C-89CA-DCBA9122C4A0} = {CDDE545B-F683-48BC-B529-C1D47FF7AE97}
 		{53D1AAAF-DD8F-4A9D-A1C1-095476D0B630} = {4E1703C6-6607-48D6-AECB-897261D7DA07}
+		{28EDDBE8-EF2F-4BBD-8980-835908DE0370} = {BA607A6F-94DD-4517-8926-FB40AC4B8093}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61622E42-184D-4673-8EEF-1BAB19987B39}
